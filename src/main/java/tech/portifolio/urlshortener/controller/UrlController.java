@@ -1,10 +1,13 @@
 package tech.portifolio.urlshortener.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.portifolio.urlshortener.controller.dto.ShortenUrlRequest;
+import tech.portifolio.urlshortener.controller.dto.ShortenUrlResponse;
 import tech.portifolio.urlshortener.entities.UrlEntity;
 import tech.portifolio.urlshortener.repository.UrlRepository;
 
@@ -21,7 +24,8 @@ public class UrlController {
     }
 
     @PostMapping(value = "/shorten-url")
-    public ResponseEntity<ShortenUrlResponse> shortenUrl(@RequestBody ShortenUrlRequest request) {
+    public ResponseEntity<ShortenUrlResponse> shortenUrl(@RequestBody ShortenUrlRequest request,
+                                                         HttpServletRequest servletRequest) {
 
         String id;
         do {
@@ -35,18 +39,18 @@ public class UrlController {
         return ResponseEntity.ok(new ShortenUrlRequest());
     }
 
-    @GetMapping
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Void> redirect(@PathVariable("id") String id) {
 
-        var url = urlRepository.findBy(id);
+        var url = urlRepository.findById(id);
 
         if(url.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create(url.get().getFullUrl()));
 
-        return ResponseEntity.status(HttpHeaders.FOUND).header(headers).build();
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .location(URI.create(url.get().getFullUrl()))
+                .build();
     }
 }
