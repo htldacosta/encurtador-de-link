@@ -1,6 +1,7 @@
 package tech.portifolio.urlshortener.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,8 +25,10 @@ public class UrlController {
     }
 
     @PostMapping(value = "/shorten-url")
-    public ResponseEntity<ShortenUrlResponse> shortenUrl(@RequestBody ShortenUrlRequest request,
+    public ResponseEntity<ShortenUrlResponse> shortenUrl(@RequestBody @Valid ShortenUrlRequest request,
                                                          HttpServletRequest servletRequest) {
+
+
 
         String id;
         do {
@@ -36,7 +39,7 @@ public class UrlController {
 
         var redirectUrl = servletRequest.getRequestURL().toString().replace("shorten-url", id);
 
-        return ResponseEntity.ok(new ShortenUrlRequest());
+        return ResponseEntity.ok(new ShortenUrlResponse(redirectUrl));
     }
 
     @GetMapping(value = "/{id}")
