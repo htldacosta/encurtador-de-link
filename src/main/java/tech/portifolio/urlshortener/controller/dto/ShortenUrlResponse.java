@@ -1,4 +1,4 @@
 package tech.portifolio.urlshortener.controller.dto;
 
-public record ShortenUrlRequest(String url) {
+public record ShortenUrlResponse(String shortUrl) {
 }
