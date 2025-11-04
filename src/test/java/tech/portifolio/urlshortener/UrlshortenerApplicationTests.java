@@ -1,5 +1,4 @@
 package tech.portifolio.urlshortener;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,14 +14,11 @@ import tech.portifolio.urlshortener.repository.UrlRepository;
 
 import java.time.LocalDateTime;
 
-import static java.lang.reflect.Array.get;
-import static net.bytebuddy.matcher.ElementMatchers.is;
-
-import static org.hamcrest.core.IsNull.notNullValue;
-
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 
 @SpringBootTest
 @AutoConfigureMockMvc
